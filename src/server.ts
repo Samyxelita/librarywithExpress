@@ -103,7 +103,7 @@ app.get("/libros/:id",(req, res) =>{
 
 app.patch("/libros/:id", (req, res) =>{
     const idNum = Number(req.params.id);
-    const libroSeleccionado = libros.find(libro => (libro.id === (idNum)))
+    const libroSeleccionado = libros.find(libro => (libro.id === idNum))
 
     if (!libroSeleccionado) {
         return res.status(404).json({mensaje : `No se ha encontrado ningun libro con el id ${idNum}`})

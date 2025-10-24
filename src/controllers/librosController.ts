@@ -21,19 +21,58 @@ export const getBookById = (req: Request, res: Response) => {
 
 
 export const updateBookById = (req: Request, res: Response) => {
-    const id = Number (req.params.id);
-    const libroSeleccionado = libros.find  (libros => libros.id == id);
+    const id = Number(req.params.id);
+    const libroSeleccionado = libros.find(libro => libro.id === id);
 
     if (!libroSeleccionado) {
-        return res.status(404).json({mensaje : `No se ha encontrado ningun libro con el id ${id}`})
+        return res.status(404).json({
+            mensaje: `No se ha encontrado ningún libro con el id ${id}`
+        });
     }
-    if(req.body.titulo) {libroSeleccionado.titulo = req.body.titulo}
-    if(req.body.autor) {libroSeleccionado.autor = req.body.autor}
+
+    if (req.body.titulo) libroSeleccionado.titulo = req.body.titulo;
+    if (req.body.autor) libroSeleccionado.autor = req.body.autor;
+    if (req.body.anio) libroSeleccionado.anio = Number(req.body.anio);
 
     res.status(200).json({
-        mensaje : `Libro con id ${id} actualizado parcialmente`,
-        datos : libroSeleccionado,
-    })
+        mensaje: `Libro con id ${id} actualizado parcialmente`,
+        datos: libroSeleccionado
+    });
+};
 
-}
+
+export const replaceBookById = (req: Request, res: Response) => {
+    const id = Number(req.params.id)
+    const libro = libros.find(l => l.id == id)
+
+    if (!libro) {
+        return res.status(404).json({ mensaje: `Libro con id ${id} no encontrado` });
+    }
+
+    libro.titulo = req.body.titulo;
+    libro.autor = req.body.autor;
+    libro.anio = req.body.anio;
+
+    res.status(200).json({
+        mensaje : "Libro Actualizado",
+        libroActualizado : libro
+
+    })
+};
+
+    export const deleteBookByID = (req: Request, res: Response ) => {
+        const id = Number (req.params.id);
+        const index = libros.findIndex(l => l.id === id);
+
+        if (index === -1) {
+            return res.status(404).json({ mensaje: "Libro no encontrado" });
+        }
+
+        libros.splice(index, 1);
+        res.status(200).json({ mensaje: `Libro con id ${id} eliminado` });
+
+    }
+
+
+
 
